@@ -1,0 +1,29 @@
+[Unit]
+Description=Hermes task engine for Darya
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=alisa-hermes
+Group=alisa-hermes
+WorkingDirectory=/data/workspace/alisa-hermes/workspace
+Environment=HERMES_HOME=/data/workspace/alisa-hermes
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONPATH=/data/workspace/alisa-hermes/agent
+EnvironmentFile=/data/workspace/alisa-hermes/.env
+ExecStart=/data/workspace/alisa-hermes/engine/bin/python3 -m gateway.run
+Restart=on-failure
+RestartSec=8
+TimeoutStopSec=90
+UMask=0077
+NoNewPrivileges=true
+RestrictSUIDSGID=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/data/workspace/alisa-hermes
+InaccessiblePaths=/data/workspace/darya/data/secrets.json /data/workspace/darya/data/alisa.sqlite /data/workspace/darya/.env -/data/workspace/darya/data/account.session -/data/workspace/darya/data/alisa.sqlite-wal -/data/workspace/darya/data/alisa.sqlite-shm
+InaccessiblePaths=-/data/workspace/alisa-backups -/data/workspace/darya/data/first-login.txt
+
+[Install]
+WantedBy=multi-user.target

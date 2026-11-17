@@ -1,0 +1,24 @@
+[Unit]
+Description=Darya HTTPS fallback and panel routing
+After=network-online.target darya.service
+Wants=network-online.target
+
+[Service]
+User=user
+Group=user
+WorkingDirectory=/data/workspace/darya
+EnvironmentFile=/data/workspace/darya/.env
+Environment=SSL_CERT_FILE=/run/instabox/secrets/ca-bundle.pem
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/data/workspace/darya/.venv/bin/python /data/workspace/darya/deploy/tunnel.py
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ReadWritePaths=/data/workspace/darya/data
+
+[Install]
+WantedBy=multi-user.target

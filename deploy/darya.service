@@ -1,0 +1,30 @@
+[Unit]
+Description=Darya Telegram Character
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=user
+Group=user
+WorkingDirectory=/data/workspace/darya
+Environment=HOST=0.0.0.0
+Environment=PORT=8790
+Environment=COOKIE_SECURE=true
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=SSL_CERT_FILE=/run/instabox/secrets/ca-bundle.pem
+EnvironmentFile=-/data/workspace/darya/.env
+ExecStart=/bin/bash /data/workspace/darya/deploy/start.sh
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=45
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/data/workspace/darya/data
+
+[Install]
+WantedBy=multi-user.target
